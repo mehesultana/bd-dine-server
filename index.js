@@ -24,6 +24,7 @@ async function run() {
 		// console.log('database connected');
 		const database = client.db('bdDine');
 		const offersCollection = database.collection('offers');
+		const restaurantsCollection = database.collection('restaurants');
 
 		// get API
 		app.get('/offers', async (req, res) => {
@@ -48,6 +49,22 @@ async function run() {
 			console.log('hit the post api', offer);
 
 			const result = await offersCollection.insertOne(offer);
+			console.log(result);
+			res.json(result);
+		});
+
+		// Add restaurants API
+		app.get('/restaurants', async (req, res) => {
+			const cursor = restaurantsCollection.find({});
+			const restaurants = await cursor.toArray();
+			res.send(restaurants);
+		});
+
+		app.post('/restaurants', async (req, res) => {
+			const restaurant = req.body;
+			console.log('hit the post api', restaurant);
+
+			const result = await restaurantsCollection.insertOne(restaurant);
 			console.log(result);
 			res.json(result);
 		});
