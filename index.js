@@ -25,6 +25,7 @@ async function run() {
 		const database = client.db('bdDine');
 		const offersCollection = database.collection('offers');
 		const restaurantsCollection = database.collection('restaurants');
+		const orderCollection = database.collection('orders');
 
 		// get API
 		app.get('/offers', async (req, res) => {
@@ -66,6 +67,15 @@ async function run() {
 
 			const result = await restaurantsCollection.insertOne(restaurant);
 			console.log(result);
+			res.json(result);
+		});
+
+		// Add Orders API
+		app.post('/orders', async (req, res) => {
+			const order = req.body;
+			console.log('order', order);
+			res.send('order processed');
+			const result = await orderCollection.insertOne(order);
 			res.json(result);
 		});
 
